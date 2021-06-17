@@ -3,6 +3,10 @@
 [BootStrap](https://v3.bootcss.com/components/#navbar)
 
 [github app](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app)
+
+[OKHttp](https://square.github.io/okhttp/#mockwebserver) 用于发送post请求
+
+[maven repository](https://mvnrepository.com/) Maven的仓库
 ## 项目工具
 
 ## 技术栈
