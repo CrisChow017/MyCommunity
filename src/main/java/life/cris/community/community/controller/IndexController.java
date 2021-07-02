@@ -21,7 +21,7 @@ public class IndexController {
     public String index(HttpServletRequest request) {
         //获取cookies，遍历校验是否存在
         Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
+        if (cookies != null && cookies.length != 0) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("token")) {
                     String token = cookie.getValue();
