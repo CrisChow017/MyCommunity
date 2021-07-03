@@ -22,11 +22,11 @@ public class AuthorizeController {
     @Autowired
     private GithubProvider githubProvider;
 
-    @Value("${github.client.id}")
+    @Value("${gitee.client.id}")
     private String clientId;
-    @Value("${github.secret}")
+    @Value("${gitee.secret}")
     private String clientSecret;
-    @Value("${github.redirect.uri}")
+    @Value("${gitee.redirect.uri}")
     private String redirectUri;
 
     @Autowired

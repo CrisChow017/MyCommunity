@@ -16,10 +16,16 @@ public class GithubProvider {
         OkHttpClient client = new OkHttpClient();
 
         RequestBody body = RequestBody.create(mediaType, JSON.toJSONString(accessTokenDTO));
+//        Request request = new Request.Builder()
+//                .url("https://github.com/login/oauth/access_token")
+//                .post(body)
+//                .build();
         Request request = new Request.Builder()
-                .url("https://github.com/login/oauth/access_token")
+                .url("https://gitee.com/api/v5/user?access_token")
                 .post(body)
                 .build();
+        System.out.println(request);
+//        https://gitee.com/oauth/token?grant_type=refresh_token&refresh_token={refresh_token}
         try (Response response = client.newCall(request).execute()) {
             String string = response.body().string();
             String token = string.split("&")[0].split("=")[1];
