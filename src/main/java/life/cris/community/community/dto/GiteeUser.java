@@ -3,7 +3,7 @@ package life.cris.community.community.dto;
 import lombok.Data;
 
 @Data
-public class GithubUser {
+public class GiteeUser {
     private String name;
     private long id;
     private String bio;
