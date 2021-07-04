@@ -1,5 +1,6 @@
 package life.cris.community.community.service;
 
+import life.cris.community.community.dto.PaginationDTO;
 import life.cris.community.community.dto.QuestionDTO;
 import life.cris.community.community.mapper.QuestionMapper;
 import life.cris.community.community.mapper.UserMapper;
@@ -20,9 +21,24 @@ public class QuestionService {
     @Autowired
     private QuestionMapper questionMapper;
 
-    public List<QuestionDTO> list() {
-        List<Question> questions = questionMapper.list();
+    public PaginationDTO list(Integer page, Integer size) {
+        //分页功能
+        //获取question的总数
+        Integer totalCount = questionMapper.count();
+        PaginationDTO paginationDTO = new PaginationDTO();
+        paginationDTO.setPagination(totalCount, page, size);
+        //越界处理
+        if (page < 1) {
+            page = 1;
+        }
+        if (page > paginationDTO.getTotalPage()) {
+            page = paginationDTO.getTotalPage();
+        }
+        //该页的起始偏移量
+        Integer offset = size * (page - 1);
+        List<Question> questions = questionMapper.list(offset, size);
         List<QuestionDTO> questionDTOList = new ArrayList<>();
+
         for (Question question : questions) {
             //通过user_id拿到user对象
             User user = userMapper.findById(question.getCreator());
@@ -32,6 +48,9 @@ public class QuestionService {
             questionDTOList.add(questionDTO);
             BeanUtils.copyProperties(question, questionDTO); //将question对象属性拷贝至questionDTO上
         }
-        return questionDTOList;
+        //paginationDTO对象中的questionList需要赋值
+        paginationDTO.setQuestions(questionDTOList);
+
+        return paginationDTO;
     }
 }
