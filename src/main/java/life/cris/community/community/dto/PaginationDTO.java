@@ -16,10 +16,8 @@ public class PaginationDTO {
     private List<Integer> pageNums = new ArrayList<>();
     private Integer totalPage;
 
-    public void setPagination(Integer totalCount, Integer page, Integer size) {
-        //当前总页数为总question条数对显示页面数向上整除
-        totalPage = (totalCount + size - 1) / size;
-
+    public void setPagination(Integer totalPage, Integer page) {
+        this.totalPage = totalPage;
         this.currentPage = page;
         pageNums.add(page);
         for (int i = 1; i <= 3; i++) {
