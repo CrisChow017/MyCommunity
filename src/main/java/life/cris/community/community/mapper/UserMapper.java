@@ -1,10 +1,7 @@
 package life.cris.community.community.mapper;
 
 import life.cris.community.community.model.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 //用于将user信息放入数据库交互
 @Mapper
@@ -16,5 +13,11 @@ public interface UserMapper {
     User findByToken(@Param("token") String token);
 
     @Select("select * from user where id = #{id}")
-    User findById(@Param("id")Integer id);
+    User findById(@Param("id") Integer id);
+
+    @Select("select * from user where account_id = #{accountId}")
+    User getByAccountId(@Param("accountId") String accountId);
+
+    @Update("UPDATE USER SET name=#{name}, token=#{token}, gmt_modified=#{gmtModified}, avatar_url=#{avatarUrl} where account_id=#{accountId}")
+    void update(User user);
 }

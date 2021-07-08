@@ -5,6 +5,7 @@ import life.cris.community.community.dto.GiteeUser;
 import life.cris.community.community.mapper.UserMapper;
 import life.cris.community.community.model.User;
 import life.cris.community.community.provider.GiteeProvider;
+import life.cris.community.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -29,8 +30,10 @@ public class AuthorizeController {
     @Value("${gitee.redirect.uri}")
     private String redirectUri;
 
+
     @Autowired
-    private UserMapper userMapper;
+    private UserService userService;
+
     @GetMapping("/callback")
     public String callback(@RequestParam(name="code") String code,
                            @RequestParam(name="state") String state,
@@ -51,10 +54,8 @@ public class AuthorizeController {
             user.setToken(token);
             user.setName(giteeUser.getName());
             user.setAccountId(String.valueOf(giteeUser.getId()));
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModified(user.getGmtCreate());
             user.setAvatarUrl(giteeUser.getAvatar_url());
-            userMapper.insert(user);
+            userService.createOrUpdate(user);
             response.addCookie(new Cookie("token", token));
             //登录成功，写入cookie 和 session
             request.getSession().setAttribute("user", giteeUser);
@@ -63,5 +64,15 @@ public class AuthorizeController {
             //登录失败， 重新登录
             return "redirect:/";
         }
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request,
+                         HttpServletResponse response) {
+        request.getSession().removeAttribute("user");
+        Cookie cookie = new Cookie("token", null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return "redirect:/";
     }
 }

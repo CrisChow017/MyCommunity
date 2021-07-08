@@ -1,10 +1,7 @@
 package life.cris.community.community.mapper;
 
 import life.cris.community.community.model.Question;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -26,4 +23,7 @@ public interface QuestionMapper {
 
     @Select("SELECT * FROM QUESTION WHERE id=#{id}")
     Question getById(@Param(value = "id")Integer id);
+
+    @Update("UPDATE QUESTION SET title=#{title}, description=#{description}, gmt_modified=#{gmtModified}, tag=#{tag} where id=#{id}")
+    void update(Question question);
 }
