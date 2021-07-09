@@ -1,8 +1,8 @@
-package life.cris.community.community.provider;
+package life.cris.community.provider;
 
 import com.alibaba.fastjson.JSON;
-import life.cris.community.community.dto.AccessTokenDTO;
-import life.cris.community.community.dto.GiteeUser;
+import life.cris.community.dto.AccessTokenDTO;
+import life.cris.community.dto.GiteeUser;
 import okhttp3.*;
 import org.springframework.stereotype.Component;
 

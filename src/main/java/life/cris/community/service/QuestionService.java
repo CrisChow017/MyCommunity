@@ -1,11 +1,13 @@
-package life.cris.community.community.service;
+package life.cris.community.service;
 
-import life.cris.community.community.dto.PaginationDTO;
-import life.cris.community.community.dto.QuestionDTO;
-import life.cris.community.community.mapper.QuestionMapper;
-import life.cris.community.community.mapper.UserMapper;
-import life.cris.community.community.model.Question;
-import life.cris.community.community.model.User;
+import life.cris.community.dto.PaginationDTO;
+import life.cris.community.dto.QuestionDTO;
+import life.cris.community.mapper.QuestionMapper;
+import life.cris.community.mapper.UserMapper;
+import life.cris.community.model.Question;
+import life.cris.community.model.QuestionExample;
+import life.cris.community.model.User;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +26,7 @@ public class QuestionService {
     public PaginationDTO list(Integer page, Integer size) {
         //分页功能
         //获取question的总数
-        Integer totalCount = questionMapper.count();
+        Integer totalCount = (int) questionMapper.countByExample(new QuestionExample());
         PaginationDTO paginationDTO = new PaginationDTO();
         //当前总页数为总question条数对显示页面数向上整除
         int totalPage = (totalCount + size - 1) / size;
@@ -38,12 +40,12 @@ public class QuestionService {
         paginationDTO.setPagination(totalPage, page);
         //该页的起始偏移量
         Integer offset = size * (page - 1);
-        List<Question> questions = questionMapper.list(offset, size);
+        List<Question> questions = questionMapper.selectByExampleWithBLOBsWithRowbounds(new QuestionExample(), new RowBounds(offset, size));
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
         for (Question question : questions) {
             //通过user_id拿到user对象
-            User user = userMapper.findById(question.getCreator());
+            User user = userMapper.selectByPrimaryKey(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
             //将question 传入传输层的QuestionDTO
             questionDTO.setUser(user);
@@ -56,10 +58,13 @@ public class QuestionService {
         return paginationDTO;
     }
 
-    public PaginationDTO list_2(Integer userId, Integer page, Integer size) {
+    public PaginationDTO list(Integer userId, Integer page, Integer size) {
         //分页功能
         //获取question的总数
-        Integer totalCount = questionMapper.countByUserId(userId);
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.createCriteria()
+                .andCreatorEqualTo(userId);
+        Integer totalCount = (int) questionMapper.countByExample(new QuestionExample());
         PaginationDTO paginationDTO = new PaginationDTO();
 
         //当前总页数为总question条数对显示页面数向上整除
@@ -74,17 +79,20 @@ public class QuestionService {
         paginationDTO.setPagination(totalPage, page);
         //该页的起始偏移量
         Integer offset = size * (page - 1);
-        List<Question> questions = questionMapper.list_2(userId, offset, size);
+        QuestionExample example = new QuestionExample();
+        example.createCriteria()
+                .andCreatorEqualTo(userId);
+        List<Question> questions = questionMapper.selectByExampleWithBLOBsWithRowbounds(example, new RowBounds(offset, size));
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
         for (Question question : questions) {
             //通过user_id拿到user对象
-            User user = userMapper.findById(question.getCreator());
+            User user = userMapper.selectByPrimaryKey(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
             //将question 传入传输层的QuestionDTO
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
-            BeanUtils.copyProperties(question, questionDTO); //将question对象属性拷贝至questionDTO上
+//            BeanUtils.copyProperties(question, questionDTO); //将question对象属性拷贝至questionDTO上
         }
         //paginationDTO对象中的questionList需要赋值
         paginationDTO.setQuestions(questionDTOList);
@@ -93,10 +101,10 @@ public class QuestionService {
     }
 
     public QuestionDTO getById(Integer id) {
-        Question question = questionMapper.getById(id);
+        Question question = questionMapper.selectByPrimaryKey(id);
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question, questionDTO);
-        User user = userMapper.findById(question.getCreator());
+        User user = userMapper.selectByPrimaryKey(question.getCreator());
         questionDTO.setUser(user);
         return questionDTO;
     }
@@ -106,11 +114,18 @@ public class QuestionService {
             //create
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
-            questionMapper.create(question);
+            questionMapper.insertSelective(question);
         }else {
             //update
-            question.setGmtModified(question.getGmtCreate());
-            questionMapper.update(question);
+            Question updateQuestion = new Question();
+            updateQuestion.setGmtModified(System.currentTimeMillis());
+            updateQuestion.setDescription(question.getDescription());
+            updateQuestion.setTitle(question.getTitle());
+            updateQuestion.setTag(question.getTag());
+            QuestionExample example = new QuestionExample();
+            example.createCriteria()
+                    .andIdEqualTo(question.getId());
+            questionMapper.updateByExampleSelective(updateQuestion, example);
         }
     }
 }

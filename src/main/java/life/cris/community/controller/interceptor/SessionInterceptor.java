@@ -1,7 +1,8 @@
-package life.cris.community.community.controller.interceptor;
+package life.cris.community.controller.interceptor;
 
-import life.cris.community.community.mapper.UserMapper;
-import life.cris.community.community.model.User;
+import life.cris.community.mapper.UserMapper;
+import life.cris.community.model.User;
+import life.cris.community.model.UserExample;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @Service
 public class SessionInterceptor implements HandlerInterceptor {
@@ -27,9 +29,12 @@ public class SessionInterceptor implements HandlerInterceptor {
                 if (cookie.getName().equals("token")) {
                     String token = cookie.getValue();
                     //存在cookie则通过cookie中的token获取user对象
-                    User user = userMapper.findByToken(token);
-                    if (user != null)
-                        request.getSession().setAttribute("user", user);
+                    UserExample userExample = new UserExample();
+                    userExample.createCriteria()
+                            .andTokenEqualTo(token);
+                    List<User> users = userMapper.selectByExample(userExample);
+                    if (users.size() != 0)
+                        request.getSession().setAttribute("user", users.get(0));
                     break;
                 }
             }

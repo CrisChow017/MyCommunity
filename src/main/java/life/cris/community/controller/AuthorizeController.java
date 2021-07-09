@@ -1,11 +1,10 @@
-package life.cris.community.community.controller;
+package life.cris.community.controller;
 
-import life.cris.community.community.dto.AccessTokenDTO;
-import life.cris.community.community.dto.GiteeUser;
-import life.cris.community.community.mapper.UserMapper;
-import life.cris.community.community.model.User;
-import life.cris.community.community.provider.GiteeProvider;
-import life.cris.community.community.service.UserService;
+import life.cris.community.dto.AccessTokenDTO;
+import life.cris.community.dto.GiteeUser;
+import life.cris.community.model.User;
+import life.cris.community.provider.GiteeProvider;
+import life.cris.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;

@@ -1,4 +1,4 @@
-package life.cris.community.community;
+package life.cris.community;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

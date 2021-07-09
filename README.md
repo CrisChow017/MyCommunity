@@ -13,6 +13,8 @@
 [Lombok](https://projectlombok.org/) getter and setter 生成器
 
 [Springboot](https://docs.spring.io/spring-boot/docs/current/reference/html/using.html) 官方文档
+
+[Mybatis-Generator](http://mybatis.org/generator/) 官方文档
 ## 项目工具
 
 ## 技术栈
@@ -32,4 +34,12 @@ GMT_MODIFIED BIGINT,
 constraint USER_PK
 primary key (ID)
 );
+```
+
+##常用命令
+```flyway更新sql
+mvn flyway:migrate
+```
+```mybatis-generator
+mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
 ```

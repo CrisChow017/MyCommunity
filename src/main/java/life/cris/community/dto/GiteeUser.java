@@ -1,4 +1,4 @@
-package life.cris.community.community.dto;
+package life.cris.community.dto;
 
 import lombok.Data;
 

@@ -1,7 +1,7 @@
-package life.cris.community.community.controller;
+package life.cris.community.controller;
 
-import life.cris.community.community.dto.QuestionDTO;
-import life.cris.community.community.service.QuestionService;
+import life.cris.community.dto.QuestionDTO;
+import life.cris.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +17,7 @@ public class QuestionController {
     public String question(@PathVariable(name="id") Integer id,
                            Model model){
         QuestionDTO questionDTO= questionService.getById(id);
+
         model.addAttribute("question", questionDTO);
         return "question";
     }

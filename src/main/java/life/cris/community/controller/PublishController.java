@@ -1,10 +1,9 @@
-package life.cris.community.community.controller;
+package life.cris.community.controller;
 
-import life.cris.community.community.dto.QuestionDTO;
-import life.cris.community.community.mapper.QuestionMapper;
-import life.cris.community.community.model.Question;
-import life.cris.community.community.model.User;
-import life.cris.community.community.service.QuestionService;
+import life.cris.community.dto.QuestionDTO;
+import life.cris.community.model.Question;
+import life.cris.community.model.User;
+import life.cris.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller

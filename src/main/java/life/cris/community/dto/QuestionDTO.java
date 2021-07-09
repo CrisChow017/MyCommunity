@@ -1,9 +1,10 @@
-package life.cris.community.community.model;
+package life.cris.community.dto;
 
+import life.cris.community.model.User;
 import lombok.Data;
 
 @Data
-public class Question {
+public class QuestionDTO {
     private Integer id;
     private String title;
     private String description;
@@ -13,4 +14,5 @@ public class Question {
     private Integer creator;
     private Integer viewCount;
     private Integer commentCount;
+    private User user;
 }

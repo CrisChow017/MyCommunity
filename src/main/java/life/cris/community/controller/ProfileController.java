@@ -1,8 +1,8 @@
-package life.cris.community.community.controller;
+package life.cris.community.controller;
 
-import life.cris.community.community.dto.PaginationDTO;
-import life.cris.community.community.model.User;
-import life.cris.community.community.service.QuestionService;
+import life.cris.community.dto.PaginationDTO;
+import life.cris.community.model.User;
+import life.cris.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +33,7 @@ public class ProfileController {
             model.addAttribute("section", "replies");
             model.addAttribute("sectionName", "最新回复");
         }
-        PaginationDTO paginationDTO = questionService.list_2(user.getId(), page, size);
+        PaginationDTO paginationDTO = questionService.list(user.getId(), page, size);
         model.addAttribute("pagination", paginationDTO);
         return "profile";
     }
