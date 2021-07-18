@@ -44,9 +44,7 @@ public class AuthorizeController {
         accessTokenDTO.setClient_secret(clientSecret);
         accessTokenDTO.setCode(code);
         String accessToken = giteeProvider.getAccessToken(accessTokenDTO);
-        System.out.println(accessToken);
         GiteeUser giteeUser = giteeProvider.getUser(accessToken);
-        System.out.println(giteeUser);
         if (giteeUser != null) {
             User user = new User();
             String token = UUID.randomUUID().toString();

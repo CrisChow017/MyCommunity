@@ -4,6 +4,7 @@ import life.cris.community.dto.PaginationDTO;
 import life.cris.community.dto.QuestionDTO;
 import life.cris.community.exception.CustomizeErrorCode;
 import life.cris.community.exception.CustomizeException;
+import life.cris.community.mapper.QuestionExtMapper;
 import life.cris.community.mapper.QuestionMapper;
 import life.cris.community.mapper.UserMapper;
 import life.cris.community.model.Question;
@@ -24,6 +25,8 @@ public class QuestionService {
     private UserMapper userMapper;
     @Autowired
     private QuestionMapper questionMapper;
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
 
     public PaginationDTO list(Integer page, Integer size) {
         //分页功能
@@ -60,7 +63,7 @@ public class QuestionService {
         return paginationDTO;
     }
 
-    public PaginationDTO list(Integer userId, Integer page, Integer size) {
+    public PaginationDTO list(Long userId, Integer page, Integer size) {
         //分页功能
         //获取question的总数
         QuestionExample questionExample = new QuestionExample();
@@ -102,7 +105,7 @@ public class QuestionService {
         return paginationDTO;
     }
 
-    public QuestionDTO getById(Integer id) {
+    public QuestionDTO getById(Long id) {
         Question question = questionMapper.selectByPrimaryKey(id);
         if (question == null) {
             throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
@@ -135,13 +138,10 @@ public class QuestionService {
         }
     }
 
-    public void incView(Integer id) {
-        Question question = questionMapper.selectByPrimaryKey(id);
-        Question updateQuestion = new Question();
-        updateQuestion.setViewCount(question.getViewCount() +  1);
-        QuestionExample example = new QuestionExample();
-        example.createCriteria()
-                .andIdEqualTo(id);
-        questionMapper.updateByExampleSelective(updateQuestion, example);
+    public void incView(Long id) {
+        Question question = new Question();
+        question.setId(id);
+        question.setViewCount(1);
+        questionExtMapper.incView(question);
     }
 }

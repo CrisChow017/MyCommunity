@@ -21,7 +21,7 @@ public class PublishController {
     private QuestionService questionService;
     //路由到提问编辑页面
     @GetMapping("/publish/{id}")
-    public String edit(@PathVariable(name = "id") Integer id,
+    public String edit(@PathVariable(name = "id") Long id,
                        Model model){
         QuestionDTO question = questionService.getById(id);
         model.addAttribute("title", question.getTitle());
@@ -39,7 +39,7 @@ public class PublishController {
     public String doPublish(@RequestParam("title") String title,
                             @RequestParam("description") String description,
                             @RequestParam("tag") String tag,
-                            @RequestParam("id") Integer id,
+                            @RequestParam("id") Long id,
                             HttpServletRequest request,
                             Model model) {
         //如果异常，传入异常信息

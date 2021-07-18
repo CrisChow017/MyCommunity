@@ -1,4 +1,4 @@
-package life.cris.community.controller.interceptor;
+package life.cris.community.interceptor;
 
 import life.cris.community.mapper.UserMapper;
 import life.cris.community.model.User;
